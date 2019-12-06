@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %} Add Post {% endblock %}
+{% block content %}
+<h2>Add Post</h2>
+<form method="POST">
+    {% csrf_token %}
+    <!-- {{ form.as_table }} -->
+    {{ form.as_p }}
+    <button type="submit">Add post</button>
+</form>
+<a href="{% url 'blog-list' %}">zurück</a>
+{% endblock %}

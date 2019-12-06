@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %} Blog {% endblock %}
+{% block content %}
+<h2>Blog</h2>
+    {% if user.is_authenticated and not user.blog %}
+    <a href="{% url 'blog-create' %}">Create Blog</a>
+    {% endif %}
+<ul>
+    {% for blog in object_list %}
+    <li>
+        <h4><a href="{% url 'post-list' blog.user.username %}">{{ blog.title }}</a></h4>
+        <p>{{ blog.description }}</p>
+        <p><i>von {{ blog.user.username }}</i></p>
+    </li>
+    {% empty %}
+        <li>Keine Blogs vorhanden!</li>
+    {% endfor %}
+</ul>
+{% endblock %}

@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% block title %} {{ object.title }} {% endblock %}
+{% block content %}
+<h2>Blog</h2>
+
+<ul>
+    <li>
+        <h4>{{ object.title }}</h4>
+        <p>{{ object.text }}</p>
+        <p>von {{ object.author }} am {{ object.created }}</p>
+
+        <a href="{% url 'question-create' object.id %}">Ask Question</a>
+
+        {% for question in object.question_set.all %}
+            <p><i>Question from {{ question.user.username }}</i></p>
+            <p>{{ question.text }}</p>
+        {% endfor %}
+    </li>
+</ul>
+<a href="{% url 'post-list' object.blog.user.username %}">zurück</a>
+
+{% endblock %}
