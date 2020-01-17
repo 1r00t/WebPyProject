@@ -16,7 +16,9 @@ class BlogListView(ListView):
 class BlogCreateView(CreateView):
     model = Blog
     form_class = BlogForm
-    success_url = reverse_lazy('post-list')
+
+    def get_success_url(self):
+        return reverse("post-list", args=(self.request.user.username,))
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -25,11 +27,17 @@ class BlogCreateView(CreateView):
 
 class PostListView(ListView):
     model = Post
+    context_object_name = "posts"
 
     def get_queryset(self):
         user = User.objects.get(username=self.kwargs.get('slug'))
         blog = Blog.objects.get(user=user)
         return self.model.objects.filter(blog=blog)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["owner"] = self.kwargs.get('slug')
+        return context
 
 
 class PostDetailView(DetailView):
