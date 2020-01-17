@@ -7,6 +7,12 @@
 </head>
 <body>
   <main>
+
+    <p>
+      <a href="{% url 'blog-list' %}">Home</a>
+      <a href="{% url 'search-view' %}">Suchen</a>
+    </p>
+
     {% if user.is_authenticated %}
     Hi {{ user.username }}! <a href="{% url 'edit-profile' user.pk %}">edit profile</a>
     <a href="{% url 'logout' %}">logout</a>

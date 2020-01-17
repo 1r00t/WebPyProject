@@ -5,8 +5,10 @@ from django.shortcuts import render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import ListView, DetailView, CreateView
 
-from Blog.forms import PostForm, BlogForm, QuestionForm
+from Blog.forms import PostForm, BlogForm, QuestionForm, SearchForm
 from Blog.models import Post, Blog, Question
+
+from django.db.models import Q
 
 
 class BlogListView(ListView):
@@ -71,3 +73,35 @@ class QuestionCreateView(CreateView):
         form.instance.post = post
         form.instance.user = self.request.user
         return super().form_valid(form)
+
+
+def search_view(request):
+    form = SearchForm(request.POST)
+    context = {}
+    if request.method == "POST":
+        if form.is_valid():
+            print(form.cleaned_data)
+            query = form.cleaned_data.get("query")
+            opt_blog = form.cleaned_data.get("opt_blog")
+            opt_post = form.cleaned_data.get("opt_post")
+            opt_ques = form.cleaned_data.get("opt_ques")
+
+            if opt_blog:
+                blogs = Blog.objects.filter(
+                    Q(title__contains=query) | Q(description__contains=query)
+                )
+                context["blogs"] = blogs
+
+            if opt_post:
+                posts = Post.objects.filter(
+                    Q(title__contains=query) | Q(text__contains=query)
+                )
+                context["posts"] = posts
+
+            if opt_ques:
+                quests = Question.objects.filter(text__contains=query)
+                context["quests"] = quests
+
+            print(context)
+
+    return render(request, "Blog/search.html", {"form": form, "context": context})

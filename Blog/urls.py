@@ -2,7 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.urls import path
 
 from Blog import views
-from Blog.views import PostDetailView, PostCreateView, PostListView, QuestionCreateView
+from Blog.views import PostDetailView, PostCreateView, PostListView, QuestionCreateView, search_view
 
 urlpatterns = [
     path('', views.BlogListView.as_view(), name='blog-list'),
@@ -11,7 +11,9 @@ urlpatterns = [
     #path('', views.PostListView.as_view(), name='post-list'),
     path('post/<int:pk>/', PostDetailView.as_view(), name='post-detail'),
     path('post/create/', login_required(PostCreateView.as_view()), name='post-create'),
+    path('search/', search_view, name='search-view'),
     path('<str:slug>/', PostListView.as_view(), name='post-list'),
 
     path('<int:post_id>/question/create/', login_required(QuestionCreateView.as_view()), name='question-create'),
+
 ]

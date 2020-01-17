@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+{% block title %} Search {% endblock %}
+{% block content %}
+<h2>Search</h2>
+<form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Search</button>
+</form>
+
+
+<h1>Results:</h1>
+{% if context.blogs %}
+    <h3>Blogs:</h3>
+    <ul>
+    {% for blog in context.blogs %}
+        <li><b>{{ blog.title }}</b> {{ blog.description }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if context.posts %}
+    <h3>Posts:</h3>
+    <ul>
+    {% for post in context.posts %}
+        <li><b>{{ post.title }}</b> {{ post.text }}</li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+{% if context.quests %}
+    <h3>Questions</h3>
+    <ul>
+    {% for quest in context.quests %}
+        <li><b>{{ quest.text }}</b></li>
+    {% endfor %}
+    </ul>
+{% endif %}
+
+<a href="{% url 'blog-list' %}">zurück</a>
+{% endblock %}
