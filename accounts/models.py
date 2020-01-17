@@ -25,7 +25,3 @@ def create_or_update_user_profile(sender, instance, created, **kwargs):
     if created:
         Profile.objects.create(user=instance)
     instance.profile.save()
-
-Nostrud adipisicing cupidatat commodo cupidatat veniam ex enim ea mollit dolor reprehenderit mollit non.
-
-Laboris quis id velit minim sit magna laboris ullamco. Ipsum id non nulla laboris enim proident voluptate in irure tempor officia commodo amet occaecat. Ipsum aliqua consectetur Lorem eiusmod cillum cillum ea ex duis.
