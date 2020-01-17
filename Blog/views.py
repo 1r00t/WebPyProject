@@ -49,6 +49,9 @@ class PostCreateView(CreateView):
     form_class = PostForm
     success_url = reverse_lazy('blog-list')
 
+    def get_success_url(self):
+        return reverse("post-detail", args=(self.object.pk,))
+
     def form_valid(self, form):
         blog = Blog.objects.get(user=self.request.user)
         form.instance.blog = blog
@@ -59,6 +62,9 @@ class QuestionCreateView(CreateView):
     model = Question
     form_class = QuestionForm
     success_url = reverse_lazy('blog-list')
+
+    def get_success_url(self):
+        return reverse("post-detail", args=(self.object.post.pk,))
 
     def form_valid(self, form):
         post = Post.objects.get(id=self.kwargs.get('post_id'))
