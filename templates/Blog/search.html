@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %} Search {% endblock %}
 {% block content %}
-<h2>Search</h2>
+<h1>Search</h1>
 <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
@@ -9,12 +9,15 @@
 </form>
 
 
-<h1>Results:</h1>
+<h2>Results:</h2>
 {% if context.blogs %}
     <h3>Blogs:</h3>
     <ul>
     {% for blog in context.blogs %}
-        <li><b>{{ blog.title }}</b> {{ blog.description }}</li>
+        <li>
+            <a href="{% url 'post-list' blog.user.username %}">{{ blog.title }}</a><br>
+            {{ blog.description }}
+        </li>
     {% endfor %}
     </ul>
 {% endif %}
@@ -23,7 +26,11 @@
     <h3>Posts:</h3>
     <ul>
     {% for post in context.posts %}
-        <li><b>{{ post.title }}</b> {{ post.text }}</li>
+        <li>
+            <a href="{% url 'post-detail' post.id %}">{{ post.title }}</a><br>
+            {{ post.text }}<br>
+            von <a href="{% url 'post-list' post.blog.user.username %}">{{ post.blog.user.username }}</a>
+        </li>
     {% endfor %}
     </ul>
 {% endif %}
@@ -32,7 +39,10 @@
     <h3>Questions</h3>
     <ul>
     {% for quest in context.quests %}
-        <li><b>{{ quest.text }}</b></li>
+        <li>
+            {{ quest.text }}<br>
+            <a href="{% url 'post-detail' quest.post.id %}">{{ quest.post.title }}</a>
+        </li>
     {% endfor %}
     </ul>
 {% endif %}
